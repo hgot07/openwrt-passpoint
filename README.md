@@ -1,1 +1,1 @@
-# openwrt-passpoint
+# OpenWrt-Passpoint
