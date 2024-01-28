@@ -1386,7 +1386,6 @@ wpa_supplicant_add_network() {
 
 					json_get_vars subject_match
 					[ -n "$subject_match" ] && append network_data "subject_match=\"$subject_match\"" "$N$T"
-#					[ -n "$subject_match" ] && append cred_data "subject_match=\"$subject_match\"" "$N$T"
 
 					json_get_values altsubject_match altsubject_match
 					if [ -n "$altsubject_match" ]; then
@@ -1395,7 +1394,6 @@ wpa_supplicant_add_network() {
 							append list "$x" ";"
 						done
 						append network_data "altsubject_match=\"$list\"" "$N$T"
-#						append cred_data "altsubject_match=\"$list\"" "$N$T"
 					fi
 
 					json_get_values domain_match domain_match
@@ -1427,7 +1425,6 @@ wpa_supplicant_add_network() {
 							auth="$(echo $auth | cut -b 5- )"
 							[ "$eap_type" = "ttls" ] &&
 								phase2proto="autheap="
-								phase2proto_cred="auth="
 							json_get_vars subject_match2
 							[ -n "$subject_match2" ] && append network_data "subject_match2=\"$subject_match2\"" "$N$T"
 
@@ -1456,12 +1453,11 @@ wpa_supplicant_add_network() {
 									append list "$x" ";"
 								done
 								append network_data "domain_suffix_match2=\"$list\"" "$N$T"
-								append cred_data "domain_suffix_match2=\"$list\"" "$N$T"
 							fi
 						;;
 					esac
 					append network_data "phase2=\"$phase2proto$auth\"" "$N$T"
-					append cred_data "phase2=\"$phase2proto_cred$auth\"" "$N$T"
+					append cred_data "phase2=\"$phase2proto$auth\"" "$N$T"
 				;;
 			esac
 			append network_data "eap=$(echo $eap_type | tr 'a-z' 'A-Z')" "$N$T"
