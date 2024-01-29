@@ -18,6 +18,9 @@ Write!
 
 [>> Details](ap/README.md)
 
+- [Configuring Hotspot 2.0 (Passpoint) on OpenWrt](https://hgot07.hatenablog.com/entry/2022/03/21/231715)
+
+
 ## Clients (aka User Equipments, STA)
 
 Todo:
@@ -26,6 +29,8 @@ Catch up with the latest code at the OpenWrt main repository.
 [>> Details](sta/README.md)
 
 ## Resources
+- [OpenWrt main repository](https://git.openwrt.org/openwrt/openwrt.git)
+- [OpenWrt mirror repository at GitHub](https://github.com/openwrt/openwrt)
 - [hostapd configuration file](https://w1.fi/cgit/hostap/plain/hostapd/hostapd.conf)
 - [wpa_supplicant configuration file](https://w1.fi/cgit/hostap/plain/wpa_supplicant/wpa_supplicant.conf)
 - [IEEE GET Program - GET 802(R) Standards](https://ieeexplore.ieee.org/browse/standards/get-program/page/series?id=68)
