@@ -19,7 +19,7 @@ Write!
 [>> Details](ap/README.md)
 
 See also:
-- [Configuring Hotspot 2.0 (Passpoint) on OpenWrt](https://hgot07.hatenablog.com/entry/2022/03/21/231715){:target="_blank" rel="noopener noreferrer"}
+- ![Configuring Hotspot 2.0 (Passpoint) on OpenWrt](https://hgot07.hatenablog.com/entry/2022/03/21/231715)
 
 
 ## Clients (aka User Equipments, STA)
