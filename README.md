@@ -1,36 +1,33 @@
 # OpenWrt-Passpoint
 
-Documents and some experimental codes to enable Passpoint on OpenWrt (21.x or newer).
+Documents and some experimental codes to enable Passpoint (aka Hotspot 2.0) on OpenWrt (21.x or newer).
+
+## Requirements
+
+OpenWrt 21.x or newer as they come with Passpoint-enabled software. 22.x or newer is recommended to fully benefit from the Passpoint client feature. 2021 version of wpad (wpa_supplicant) may not join Passpoint network due to lack of some ANQP functions.
+
+A full version of wpad (or hostapd/wpa_supplicant). If *-basic one is installed, it needs to be replaced with a full version such as wpad-openssl.
+
+Note: Some GL.iNet routers come with firmware not based on the standard wpad. Passpoint does not work on some models.
+
 
 ## Access Points (AP)
 
 Todo:
 Write!
 
+[>> Details](ap/README.md)
+
 ## Clients (aka User Equipments, STA)
 
 Todo:
 Catch up with the latest code at the OpenWrt main repository.
 
-The modifed **/lib/netifd/hostapd.sh** allows configuring a Passpoint client.
+[>> Details](sta/README.md)
 
-The following options are added to the "sta" block in /etc/config/wireless.
-- option iw_enable '1'  
-Enable (1) or disable (0) Passpoint
-- option iw_rcois 'deadbeef00'  
-Enable matching by RCOIs (comma separated list of 3 or 5-octet hex)
-- option iw_realm 'example. com'  
-Alternatively, enable matching by an NAI realm
-
-In Passpoint, **option domain_suffix_match** must be used for the server authentication.
-Other methods such as subject_match will not prevent accidental connection to an evil-twin AP.
-
-The following parameters (e.g. EAP-TTLS) are also used in the interworking.
-- option identity 'User-Name'
-- option password 'Password'
-- option eap_type 'ttls'
-- option auth 'EAP-MSCHAPV2'
-- option ca_cert_usesystem '1'
-
-It is recommended to configure WPA2/WPA3 Enterprise (client mode) first,
-and then add the iw_* parameters. Any dummy SSID may be set.
+## Resources
+- [hostapd configuration file](https://w1.fi/cgit/hostap/plain/hostapd/hostapd.conf)
+- [wpa_supplicant configuration file](https://w1.fi/cgit/hostap/plain/wpa_supplicant/wpa_supplicant.conf)
+- [IEEE GET Program - GET 802(R) Standards](https://ieeexplore.ieee.org/browse/standards/get-program/page/series?id=68)
+- [Wi-Fi CERTIFIED Passpoint](https://www.wi-fi.org/discover-wi-fi/passpoint)
+- [WBA OpenRoaming](https://wballiance.com/openroaming/)
