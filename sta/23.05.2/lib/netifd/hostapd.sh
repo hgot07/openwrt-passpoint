@@ -1422,6 +1422,9 @@ wpa_supplicant_add_network() {
 					append network_data "client_cert=\"$client_cert\"" "$N$T"
 					append network_data "private_key=\"$priv_key\"" "$N$T"
 					append network_data "private_key_passwd=\"$priv_key_pwd\"" "$N$T"
+					append cred_data "client_cert=\"$client_cert\"" "$N$T"
+					append cred_data "private_key=\"$priv_key\"" "$N$T"
+					append cred_data "private_key_passwd=\"$priv_key_pwd\"" "$N$T"
 
 					json_get_vars subject_match
 					[ -n "$subject_match" ] && append network_data "subject_match=\"$subject_match\"" "$N$T"
@@ -1451,6 +1454,7 @@ wpa_supplicant_add_network() {
 							append list "$x" ";"
 						done
 						append network_data "domain_suffix_match=\"$list\"" "$N$T"
+						append cred_data "domain_suffix_match=\"$list\"" "$N$T"
 					fi
 				;;
 				fast|peap|ttls)
