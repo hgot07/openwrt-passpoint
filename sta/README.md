@@ -69,5 +69,3 @@ config wifi-iface 'wifinet8'
 	option iw_rcois '000000'
 	option ieee80211w '1'
 ```
-Note: If the server certificate is issued by an intermediate CA, all intermediate certificates need to be added to the CA file (or ca_path directory). If an intermediate certificate is missing, wpad (wpa_supplicant) fails in the certificate path validation, hence does the server authentication.
-
