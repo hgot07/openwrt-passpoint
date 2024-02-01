@@ -2,7 +2,7 @@
 
 The modifed **/lib/netifd/hostapd.sh** allows configuring a Passpoint client.
 
-The following options are added to the "sta" block in /etc/config/wireless.
+The following options are added to the "sta"-mode block in /etc/config/wireless.
 - option iw_enable '1'  
 Enable (1) or disable (0) Passpoint
 - option iw_rcois '000000,deadbeef00'  
@@ -21,11 +21,14 @@ The following parameters, originally for EAP-TTLS and EAP-TLS, will also be used
 - option ca_cert_usesystem '1'
 - option ca_cert '\<cert_path\>'
 - list domain_suffix_match '\<domain_suffix\>'
+- option client_cert '\<client_certificate_file\>'
+- option priv_key '\<private_key_file\>'
+- option priv_key_pwd '\<private_key_password\>'
 
 In Passpoint, **domain_suffix_match** must be used in the network selection and server authentication phases.
 Other methods such as subject_match cannot prevent accidental connection to an evil-twin AP.
 
-### EAP-TTLS configuration example
+### EAP-TTLS configuration example using RCOI matching
 
 In /etc/config/wireless,
 ```
@@ -48,7 +51,7 @@ config wifi-iface 'wifinet7'
 ```
 
 
-### EAP-TLS configuration example
+### EAP-TLS configuration example using NAI realm matching
 
 In /etc/config/wireless,
 ```
@@ -65,7 +68,10 @@ config wifi-iface 'wifinet8'
 	option ca_cert '/etc/ssl/certs/ca-all.crt'
 	list domain_suffix_match 'idp.example.com'
 	option iw_enabled '1'
-	option iw_rcois '000000'
+	option iw_realm 'example.com'
 	option ieee80211w '1'
 ```
-Note: If the server certificate is issued by an intermediate CA, all intermediate certificates need to be added to the CA file (or ca_path directory). If an intermediate certificate is missing, wpad (wpa_supplicant) fails in the certificate path validation, hence does the server authentication.
+Notes:  
+- There is no **anonymous_identity** option. You may use anonymous identity in the **identity** option.
+- You may use a pair of **client_key** and **priv_key** (key only) instead of the key file in .p12. Try .p12 if it does not work.
+- If the server certificate is issued by an intermediate CA, all intermediate certificates need to be added to the CA file (or ca_path directory). If an intermediate certificate is missing, wpad (wpa_supplicant) may fail in the certificate path validation, hence does the server authentication.

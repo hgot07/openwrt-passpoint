@@ -432,7 +432,7 @@ append_iw_domain_name() {
 }
 
 append_iw_domain() {
-	[ -n "$1" ] && append cred_data "	domain=\"$1\"" "$N"
+	[ -n "$1" ] && append cred_data "domain=\"$1\"" "$N"
 }
 
 append_iw_anqp_3gpp_cell_net() {
@@ -1422,7 +1422,7 @@ wpa_supplicant_add_network() {
 					append network_data "client_cert=\"$client_cert\"" "$N$T"
 					append network_data "private_key=\"$priv_key\"" "$N$T"
 					append network_data "private_key_passwd=\"$priv_key_pwd\"" "$N$T"
-					append cred_data "client_cert=\"$client_cert\"" "$N$T"
+					[ -n "$client_cert" ] && append cred_data "client_cert=\"$client_cert\"" "$N$T"
 					append cred_data "private_key=\"$priv_key\"" "$N$T"
 					append cred_data "private_key_passwd=\"$priv_key_pwd\"" "$N$T"
 
