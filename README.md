@@ -1,6 +1,8 @@
 # OpenWrt-Passpoint
 
-Documents and some experimental codes to enable Passpoint (aka Hotspot 2.0) on OpenWrt (21.x or newer).
+Documents and some experimental codes to enable Passpoint (aka Hotspot 2.0) on OpenWrt (21.x or newer). 
+
+You can connect OpenWrt devices to OpenRoaming as well if you use OpenRoaming's RCOI (Roaming Consortium Organization Identifier).
 
 ## Prerequisites
 
