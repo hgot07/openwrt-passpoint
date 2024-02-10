@@ -4,11 +4,12 @@ The modifed **/lib/netifd/hostapd.sh** allows configuring a Passpoint client.
 
 The following options are added to the "sta"-mode block in /etc/config/wireless.
 - option iw_enable '1'  
-Enable (1) or disable (0) Passpoint
+Enable (1) or disable (0) Passpoint.
 - option iw_rcois '000000,deadbeef00'  
-Enable matching by RCOIs (comma separated list of 3 or 5-octet hex)
+Enable matching by RCOIs (comma separated list of 3 or 5-octet hex).  
+FYI, the RCOI of OpenRoaming settlement-free is '5a03ba0000'.
 - option iw_realm 'example. com'  
-Alternatively, enable matching by an NAI realm
+Alternatively, enable matching by an NAI realm.
 
 It is recommended to configure a WPA2/WPA3 Enterprise (client mode) network first,
 and then add the iw_* parameters. Any dummy SSID may be set.
