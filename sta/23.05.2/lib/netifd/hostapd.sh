@@ -1604,8 +1604,8 @@ wpa_supplicant_add_network() {
 	if [ "$key_mgmt" = "WPS" ]; then
 		echo "wps_cred_processing=1" >> "$_config"
 	else
-if [ "$iw_enabled" = "1" ]; then
-	cat >> "$_config" <<EOF
+		if [ "$iw_enabled" = "1" ]; then
+			cat >> "$_config" <<EOF
 interworking=1
 hs20=1
 auto_interworking=1
@@ -1615,7 +1615,7 @@ cred={
 }
 
 EOF
-fi
+		fi
 
 		cat >> "$_config" <<EOF
 network={

@@ -1,5 +1,5 @@
 --- hostapd.sh	2024-01-13 20:16:08.242283000 +0900
-+++ hostapd.sh.patched	2024-02-01 20:03:41.778289000 +0900
++++ hostapd.sh.new	2024-02-20 15:12:45.587223000 +0900
 @@ -352,6 +352,7 @@
  	config_add_string iw_hessid iw_network_auth_type iw_qos_map_set
  	config_add_array iw_roaming_consortium iw_domain_name iw_anqp_3gpp_cell_net iw_nai_realm
@@ -114,8 +114,8 @@
  	if [ "$key_mgmt" = "WPS" ]; then
  		echo "wps_cred_processing=1" >> "$_config"
  	else
-+if [ "$iw_enabled" = "1" ]; then
-+	cat >> "$_config" <<EOF
++		if [ "$iw_enabled" = "1" ]; then
++			cat >> "$_config" <<EOF
 +interworking=1
 +hs20=1
 +auto_interworking=1
@@ -125,7 +125,7 @@
 +}
 +
 +EOF
-+fi
++		fi
 +
  		cat >> "$_config" <<EOF
  network={
