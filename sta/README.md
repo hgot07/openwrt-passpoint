@@ -6,7 +6,7 @@ The following options are added to the "sta"-mode block in /etc/config/wireless.
 - option iw_enable '1'  
 Enable (1) or disable (0) Passpoint.
 - option iw_rcois '000000,deadbeef00'  
-Enable matching by RCOIs (comma separated list of 3 or 5-octet hex).  
+Enable matching by RCOIs (comma-separated list of 3 or 5-octet hex).  
 FYI, the RCOI of OpenRoaming settlement-free is '5a03ba0000'.
 - option iw_realm 'example. com'  
 Alternatively, enable matching by an NAI realm.
@@ -75,4 +75,4 @@ config wifi-iface 'wifinet8'
 Notes:  
 - There is no **anonymous_identity** option. You may use anonymous identity in the **identity** option.
 - You may use a pair of **client_key** and **priv_key** (key only) instead of the key file in .p12. Try .p12 if it does not work.
-- If the server certificate is issued by an intermediate CA, all intermediate certificates need to be added to the CA file (or ca_path directory). If an intermediate certificate is missing, wpad (wpa_supplicant) may fail in the certificate path validation, hence does the server authentication.
+- If the server certificate is issued by an intermediate CA, all intermediate certificates would be needed in the CA file (or ca_path directory). If an intermediate certificate is missing, wpad (wpa_supplicant) may fail in the certificate path validation, hence does the server authentication.
