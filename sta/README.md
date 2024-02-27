@@ -3,7 +3,7 @@
 The modifed **/lib/netifd/hostapd.sh** allows configuring a Passpoint client.
 
 The following options are added to the "sta"-mode block in /etc/config/wireless.
-- option iw_enable '1'  
+- option iw_enabled '1'  
 Enable (1) or disable (0) Passpoint.
 - option iw_rcois '000000,deadbeef00'  
 Enable matching by RCOIs (comma-separated list of 3 or 5-octet hex).  

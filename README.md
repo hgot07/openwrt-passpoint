@@ -7,13 +7,13 @@ You can connect OpenWrt devices to OpenRoaming as well if you use OpenRoaming's 
 ## Prerequisites
 
 OpenWrt 21.x or newer is required since they come with Passpoint-enabled wpad. 
-22.x or newer is recommended to fully benefit from the Passpoint client feature.
-2021 version of wpad (wpa_supplicant) may not join Passpoint network due to lack of some ANQP functions.
+Version 22.x or newer is recommended to fully benefit from the Passpoint client feature.
+2021 version of wpad (wpa_supplicant) may not join Passpoint network due to the lack of some ANQP functions.
 
 A full version of wpad (or hostapd/wpa_supplicant) is required. If *-basic one is installed, it needs to be replaced with a full version such as wpad-openssl.
 
 Note: Some GL.iNet routers (like GL-MT3000) come with MediaTek's proprietary Wi-Fi driver whose configuration is not compatible with that of the standard wpad (combination of hostapd and wpa_supplicant). 
-Passpoint does not work on those models unless you get a firmware with a wpad-based Wi-Fi system. FYI, GL-MT3000 users can find an OpenWrt firmware image [here](https://downloads.openwrt.org/releases/23.05.2/targets/mediatek/filogic/) and use Passpoint.
+Passpoint does not work on those models unless you get firmware with a wpad-based Wi-Fi system. FYI, GL-MT3000 users can find an OpenWrt firmware image [here](https://downloads.openwrt.org/releases/23.05.2/targets/mediatek/filogic/) and use Passpoint.
 
 ## Access Points (AP)
 
@@ -28,8 +28,13 @@ See also:
 
 ## Clients (aka User Equipments, STA)
 
-Todo:
-Catch up with the latest code at the OpenWrt main repository.
+**/lib/netifd/hostapd.sh** originates from OpenWrt.
+The script reads /etc/config/wireless and produces wpa_supplicant-*.conf.
+
+A modified version is provided here.
+The functionality of Passpoint is dependent on the wpad (or wpa_supplicant). 
+The modification is only about the Passpoint client feature.
+It does not take effect unless you set iw_enabled '1' in /etc/config/wireless.
 
 [>> Details](sta/README.md)
 
