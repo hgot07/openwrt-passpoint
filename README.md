@@ -12,7 +12,8 @@ OpenWrt 21.x or newer is required since they come with Passpoint-enabled wpad.
 
 A full version of wpad (or hostapd/wpa_supplicant) is required. If *-basic one is installed, it needs to be replaced with a full version such as wpad-openssl.
 
-Note: Some GL.iNet routers (like GL-MT3000) come with firmware not based on the standard wpad. Passpoint does not work on those models.
+Note: Some GL.iNet routers (like GL-MT3000) come with MediaTek's proprietary Wi-Fi driver whose configuration is not compatible with that of the standard wpad (combination of hostapd and wpa_supplicant). 
+Passpoint does not work on those models unless you get a firmware with a wpad-based Wi-Fi system. FYI, GL-MT3000 users can find an OpenWrt firmware image [here](https://downloads.openwrt.org/releases/23.05.2/targets/mediatek/filogic/) and use Passpoint.
 
 ## Access Points (AP)
 
