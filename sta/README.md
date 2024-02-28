@@ -74,5 +74,18 @@ config wifi-iface 'wifinet8'
 ```
 Notes:  
 - There is no **anonymous_identity** option. You may use anonymous identity in the **identity** option.
-- You may use a pair of **client_key** and **priv_key** (key only) instead of the key file in .p12. Try .p12 if it does not work.
-- If the server certificate is issued by an intermediate CA, all intermediate certificates would be needed in the CA file (or ca_path directory). If an intermediate certificate is missing, wpad (wpa_supplicant) may fail in the certificate path validation, hence does the server authentication.
+- You may use a pair of **client_key** and **priv_key** (key only) instead of a key file in .p12. Try .p12 if it does not work.
+- \[EAP-TLS only\] If the server certificate is issued by an intermediate CA, all intermediate certificates would be needed in the CA file (or ca_path directory). If an intermediate certificate is missing, wpad (wpa_supplicant) may fail in the certificate path validation, hence does the server authentication.
+
+### Tested devices
+The Passpoint client functionality has been confirmed using the following devices.
+Note that the hostapd.sh script does nothing more than creating wpa_supplicant-*.conf from /etc/config/wireless.
+The functionality is dependent on the wpad (wpa_supplicant).
+
+- GL.iNet GL-MT3000 - [OpenWrt 23.05.2 for filogic](https://downloads.openwrt.org/releases/23.05.2/targets/mediatek/filogic/)
+- GL.iNet GL-MT300N-V2 - [OpenWrt 23.05.2 for mt76x8](https://downloads.openwrt.org/releases/23.05.2/targets/ramips/mt76x8/)  
+ (V4 firmware from GL.iNet is not using wpad, and Passpoint does not work on it.)
+- GL.iNet GL-A1300 - [GL.iNet Firmware 4.5.0](https://dl.gl-inet.com/router/a1300/)  
+ (Firmware 4.5.0 is based on OpenWrt 21.02.2)
+- GL.iNet GL-AXT1800 - [GL.iNet Firmware 4.4.6](https://dl.gl-inet.com/router/axt1800/)  
+ 
