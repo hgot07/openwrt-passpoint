@@ -36,7 +36,7 @@ The functionality of Passpoint is dependent on the wpad (or wpa_supplicant).
 The modification is only about the Passpoint client feature.
 It does not take effect unless you set **option iw_enabled '1'** in /etc/config/wireless.
 
-**Pull request is open here. I'm waiting for reviews.** (Please help.)
+**Pull Request is open at the link below. I'm waiting for reviews.** (Please help.)
 - [wifi-scripts: Add Passpoint client support for hostapd.sh \#14684](https://github.com/openwrt/openwrt/pull/14684)
 
 [>> Details](sta/README.md)
