@@ -17,13 +17,10 @@ Passpoint does not work on those models unless you get firmware with a wpad-base
 
 ## Access Points (AP)
 
-Todo:
-Write!
+OpenWrt 21.02 already has a CLI-level configuration interface.
+Newer is better.
 
 [>> Details](ap/README.md)
-
-See also:
-- [Configuring Hotspot 2.0 (Passpoint) on OpenWrt](https://hgot07.hatenablog.com/entry/2022/03/21/231715)
 
 
 ## Clients (aka User Equipments, STA)
