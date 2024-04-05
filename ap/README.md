@@ -24,11 +24,11 @@ To check whether the program is capable of Hotspot 2.0, please try:
 
 If nothing shows up, that hostapd isn't capable of Hotspot 2.0.
 
-The default package installed is normally wpad-basic (-wolfssl), 
+The pre-installed package is normally wpad-basic (-wolfssl), 
 which doesn't have Hotspot 2.0 support.
 **You have to remove wpad-basic and install a full version of wpad
-(eg. wpad-openssl).**
-Unticking checkbox "Automatically remove unused dependencies" is 
+(e.g. wpad-openssl).**
+Unticking the checkbox "Automatically remove unused dependencies" is 
 strongly recommended when you remove wpad-basic.
 
 **Note**: GL-MT3000 users should not try changing the iw package.
@@ -86,10 +86,11 @@ while "list" is used to list multiple options.
 In the example above, two NAI realms, example. com and
 example. org, are configured with EAP methods
 "EAP-TLS with certificate" and "EAP-TTLS/MSCHAPv2 with username/password."
+In addition, an RCOI is set.
 
-The parameter names and their contents can be found
+The parameter names and their definitions can be found
 in [the template of the hostapd configuration file](https://w1.fi/cgit/hostap/plain/hostapd/hostapd.conf).
-Please look into the "/lib/netifd/hostapd.sh" script
+Please look into "/lib/netifd/hostapd.sh" script
 to see which options are actually available.
 
 You may use the MAC address associated with the SSID 
