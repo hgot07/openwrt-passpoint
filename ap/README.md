@@ -2,7 +2,7 @@
 
 This document provides a brief explanation of 
 configuring Hotspot 2.0 (Passpoint, more officially)
-on OpenWrt to make an Passpoint-capable Access Point.
+on OpenWrt to make a Passpoint-capable Access Point.
 Tests have been done using some GL.iNet devices
 including Mango, Beryl (both int./ext. PHYs),
 Beryl AX, Slate AX, etc.
