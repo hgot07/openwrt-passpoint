@@ -50,7 +50,8 @@ config wifi-iface 'wifinet7'
 	option iw_rcois '000000'
 	option ieee80211w '1'
 ```
-
+Note:  
+- The **anonymous_identity** option isn't effective for EAP-TTLS/PEAP as of this writing. The outer-identity is always in the form ``anonymous@...'' and you cannot change it. Future release (>2.11) of hostapd might support such option.
 
 ### EAP-TLS configuration example using NAI realm matching
 
@@ -74,7 +75,8 @@ config wifi-iface 'wifinet8'
 ```
 Notes:  
 - There is no **anonymous_identity** option. You may use anonymous identity in the **identity** option.
-- You may use a pair of **client_key** and **priv_key** (key only) instead of a key file in .p12. Try .p12 if it does not work.
+- You may use a pair of **client_key** and **priv_key** (key only) instead of a key file in .p12.
+Try .p12 if the certificate-key pair configuration does not work.
 - \[EAP-TLS only\] If the server certificate is issued by an intermediate CA, all intermediate certificates would be needed in the CA file (or ca_path directory). If an intermediate certificate is missing, wpad (wpa_supplicant) may fail in the certificate path validation, hence does the server authentication.
 
 ### Tested devices
