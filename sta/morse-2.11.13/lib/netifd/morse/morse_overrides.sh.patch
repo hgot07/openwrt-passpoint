@@ -1,33 +1,14 @@
---- hostapd.sh	2026-03-15 18:32:15.881109400 +0900
-+++ hostapd.sh.new	2026-03-15 21:39:26.147969012 +0900
-@@ -373,6 +373,7 @@
- 	config_add_string iw_hessid iw_network_auth_type iw_qos_map_set
- 	config_add_array iw_roaming_consortium iw_domain_name iw_anqp_3gpp_cell_net iw_nai_realm
- 	config_add_array iw_anqp_elem iw_venue_name iw_venue_url
-+	config_add_string iw_rcois iw_realm
- 
- 	config_add_boolean hs20 disable_dgaf
- 	config_add_int anqp_domain_id
-@@ -485,6 +486,10 @@
- 	fi
- }
- 
-+append_iw_domain() {
-+	[ -n "$1" ] && append cred_data "	domain=\"$1\"" "$N"
-+}
-+
- append_iw_anqp_3gpp_cell_net() {
- 	if [ -z "$iw_anqp_3gpp_cell_net_conf" ]; then
- 		iw_anqp_3gpp_cell_net_conf="$1"
-@@ -1332,6 +1337,7 @@
- 	wireless_vif_parse_encryption
+--- morse_overrides.sh	2026-05-20 10:26:01.000000000 +0900
++++ morse_overrides.sh.new	2026-09-22 04:53:44.571612703 +0900
+@@ -751,6 +751,7 @@
+ 	morse_override_wpa3_encryption
  
  	json_get_vars \
 +		iw_enabled iw_rcois iw_realm iw_domain_name \
- 		ssid bssid key rsn_override \
- 		mcast_rate \
- 		ieee80211w ieee80211r fils ocv beacon_prot \
-@@ -1358,6 +1364,7 @@
+ 		ssid bssid key \
+ 		basic_rate mcast_rate \
+ 		ieee80211w ieee80211r fils ocv \
+@@ -782,6 +783,7 @@
  
  	local key_mgmt='NONE'
  	local network_data=
@@ -35,7 +16,7 @@
  	local T="	"
  
  	local scan_ssid="scan_ssid=1"
-@@ -1440,13 +1447,20 @@
+@@ -899,13 +901,20 @@
  
  			json_get_vars eap_type identity anonymous_identity ca_cert ca_cert_usesystem
  
@@ -56,8 +37,8 @@
  			[ -n "$anonymous_identity" ] && append network_data "anonymous_identity=\"$anonymous_identity\"" "$N$T"
  			case "$eap_type" in
  				tls)
-@@ -1454,6 +1468,9 @@
- 					append network_data "client_cert=\"$client_cert\"" "$N$T"
+@@ -924,6 +933,9 @@
+ 					fi
  					append network_data "private_key=\"$priv_key\"" "$N$T"
  					append network_data "private_key_passwd=\"$priv_key_pwd\"" "$N$T"
 +					[ -n "$client_cert" ] && append cred_data "client_cert=\"$client_cert\"" "$N$T"
@@ -66,7 +47,7 @@
  
  					json_get_vars subject_match
  					[ -n "$subject_match" ] && append network_data "subject_match=\"$subject_match\"" "$N$T"
-@@ -1483,6 +1500,7 @@
+@@ -953,6 +965,7 @@
  							append list "$x" ";"
  						done
  						append network_data "domain_suffix_match=\"$list\"" "$N$T"
@@ -74,7 +55,7 @@
  					fi
  				;;
  				fast|peap|ttls)
-@@ -1500,6 +1518,7 @@
+@@ -970,6 +983,7 @@
  						append network_data "private_key2_passwd=\"$priv_key2_pwd\"" "$N$T"
  					else
  						append network_data "password=\"$password\"" "$N$T"
@@ -82,7 +63,7 @@
  					fi
  
  					json_get_vars subject_match
-@@ -1521,6 +1540,7 @@
+@@ -991,6 +1005,7 @@
  							append list "$x" ";"
  						done
  						append network_data "domain_match=\"$list\"" "$N$T"
@@ -90,7 +71,7 @@
  					fi
  
  					json_get_values domain_suffix_match domain_suffix_match
-@@ -1530,6 +1550,7 @@
+@@ -1000,6 +1015,7 @@
  							append list "$x" ";"
  						done
  						append network_data "domain_suffix_match=\"$list\"" "$N$T"
@@ -98,33 +79,79 @@
  					fi
  
  					phase2proto="auth="
-@@ -1573,9 +1594,11 @@
+@@ -1043,10 +1059,12 @@
  						;;
  					esac
  					append network_data "phase2=\"$phase2proto$auth\"" "$N$T"
 +					append cred_data "phase2=\"$phase2proto$auth\"" "$N$T"
  				;;
  			esac
- 			append network_data "eap=$(echo $eap_type | tr 'a-z' 'A-Z')" "$N$T"
-+			append cred_data "eap=$(echo $eap_type | tr 'a-z' 'A-Z')" "$N$T"
+ 			eap_type_data=$(echo $eap_type | tr 'a-z' 'A-Z')
+ 			append network_data "eap=$eap_type_data" "$N$T"
++			append cred_data "eap=$eap_type_data" "$N$T"
  		;;
  	esac
  
-@@ -1635,6 +1658,17 @@
+@@ -1071,6 +1089,7 @@
+ 	case "$ieee80211w" in
+ 		[012])
+ 			[ "$wpa" -ge 2 ] && append network_data "ieee80211w=$ieee80211w" "$N$T"
++			pmf="pmf=$ieee80211w"
+ 		;;
+ 	esac
  
- 	if [ "$key_mgmt" = "WPS" ]; then
- 		echo "wps_cred_processing=1" >> "$_config"
-+	elif [ "$iw_enabled" = "1" ]; then
-+		cat >> "$_config" <<EOF
+@@ -1123,7 +1142,7 @@
+ 		if [ -z "$ssid" ]; then
+ 			echo "No creds in UCI to update network config"
+ 		else
+-			wpa_add_network_block "multiap_bh" "$_config"
++			wpa_add_network_block "multiap_bh" "$_config" "$iw_enabled"
+ 		fi
+ 	elif [ "$matter_enable" = 1 ]; then
+ 		echo "update_config=1"  >> "$_config"
+@@ -1162,7 +1181,7 @@
+ 			append network_data "mac_value=$(cat "/sys/class/net/$network_ifname/address")" "$N$T"
+ 		fi
+ 
+-		wpa_add_network_block "sta" "$_config"
++		wpa_add_network_block "sta" "$_config" "$iw_enabled"
+ 	fi
+ 	return 0
+ }
+@@ -1170,13 +1189,27 @@
+ 
+ # $1: network type (sta, multiap_bh, ...)
+ # $2: output file
++# $3: Interworking enabled or not
+ wpa_add_network_block()
+ {
+ 	local network_type=$1
+ 	local output_file=$2
++	local iw_enabled=$3
+ 	case "$network_type" in
+ 		sta)
+-			cat >> "$output_file" <<EOF
++			if [ "$iw_enabled" = "1" ]; then
++				cat >> "$output_file" <<EOF
 +interworking=1
 +hs20=1
 +auto_interworking=1
++$pmf
 +
 +cred={
 +	$cred_data
 +}
-+
 +EOF
- 	else
- 		cat >> "$_config" <<EOF
++			else
++				cat >> "$output_file" <<EOF
+ $mesh_data
  network={
+ 	$scan_ssid
+@@ -1186,6 +1219,7 @@
+ 	$twt_block
+ }
+ EOF
++			fi
+ 		;;
+ 		multiap_bh)
+ 			cat >> "$_config" <<EOF

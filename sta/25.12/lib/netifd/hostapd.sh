@@ -487,7 +487,7 @@ append_iw_domain_name() {
 }
 
 append_iw_domain() {
-	[ -n "$1" ] && append cred_data "domain=\"$1\"" "$N"
+	[ -n "$1" ] && append cred_data "	domain=\"$1\"" "$N"
 }
 
 append_iw_anqp_3gpp_cell_net() {

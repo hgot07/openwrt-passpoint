@@ -1,8 +1,11 @@
 ## Clients (aka User Equipments, STA)
 
-The modifed **/lib/netifd/hostapd.sh** allows configuring a Passpoint client.
+The patches here modify **/lib/netifd/hostapd.sh** allowing configuration
+ of a device as Passpoint client.
 
-The following options are added to the "sta"-mode block in /etc/config/wireless.
+Patch procedure: ```$ patch -p0 hostapd.sh < hostapd.sh.patch```  
+
+The following options will be added to the "sta"-mode block in /etc/config/wireless.
 - option iw_enabled '1'  
 Enable (1) or disable (0) Passpoint.
 - option iw_rcois '000000,deadbeef00'  
@@ -14,7 +17,7 @@ Alternatively, enable matching by an NAI realm.
 It is recommended to configure a WPA2/WPA3 Enterprise (client mode) network first,
 and then add the iw_* parameters. Any dummy SSID may be set.
 
-The following parameters, originally for EAP-TTLS and EAP-TLS, will also be used in the interworking.
+The following parameters, originally for EAP-TTLS and EAP-TLS, will also be used with the interworking.
 - option identity '\<User-Name\>'
 - option password '\<Password\>'
 - option eap_type 'ttls' or 'tls'
@@ -26,7 +29,7 @@ The following parameters, originally for EAP-TTLS and EAP-TLS, will also be used
 - option priv_key '\<private_key_file\>'
 - option priv_key_pwd '\<private_key_password\>'
 
-In Passpoint, **domain_suffix_match** must be used in the network selection and server authentication phases.
+In Passpoint, **domain_suffix_match** should be used in the network selection and server authentication phases.
 Other methods such as subject_match cannot prevent accidental connection to an evil-twin AP.
 
 ### EAP-TTLS configuration example using RCOI matching
@@ -45,7 +48,7 @@ config wifi-iface 'wifinet7'
 	option network 'wwan'
 	option ca_cert_usesystem '1'
 	list domain_suffix_match 'idp.example.com'
-	option auth 'EAP-MSCHAPV2'
+	option auth 'PAP'
 	option iw_enabled '1'
 	option iw_rcois '000000'
 	option ieee80211w '1'
@@ -90,4 +93,43 @@ The functionality is dependent on the wpad (wpa_supplicant).
 - GL.iNet GL-A1300 - [GL.iNet Firmware 4.5.0](https://dl.gl-inet.com/router/a1300/)  
  (Firmware 4.5.0 is based on OpenWrt 21.02.2)
 - GL.iNet GL-AXT1800 - [GL.iNet Firmware 4.4.6](https://dl.gl-inet.com/router/axt1800/)  
+- Morse Micro HaLowLink 2 (Tested with Wi-Fi HaLow mode only so far)
  
+<hr>
+
+## Passpoint on Wi-Fi HaLow
+
+New firmware from Morse Micro is capable of Passpoint.
+Although Wi-Fi HaLow is simply a sub-1GHz variant of Wi-Fi, 
+some tweaks are needed.
+
+The Passpoint features on both AP and STA sides have been tested 
+using HaLowLink 2 with firmware version 2.11.13.
+Two patches are needed. Please see [morse-2.11.13](morse-2.11.13)
+directory.
+
+### Wi-Fi HaLow configuration example (EAP-TTLS with RCOI-based matching)
+
+In /etc/config/wireless,
+```
+config wifi-iface 'wifinet7'
+	option device 'radio1'
+	option mode 'sta'
+	option network 'wwan'
+	option ssid '_Passpoint'
+	option encryption 'wpa3'
+	option eap_type 'ttls'
+	option auth 'PAP'
+	option identity 'userID@example.com'
+	option password 'password'
+	option anonymous_identity 'anonymous@example.com'
+	option ca_cert_usesystem '1'
+	list domain_suffix_match 'idp.example.com'
+	option iw_enabled '1'
+	option iw_rcois '000000'
+	option ieee80211w '2'
+```
+Note:  
+- WPA3 Enterprise mode is strongly recommended in Wi-Fi HaLow.
+ Hence, setting ieee80211w=2 (PMF=2) is appropriate.
+

@@ -1,14 +1,14 @@
---- hostapd.sh	2026-03-15 18:32:15.881109400 +0900
-+++ hostapd.sh.new	2026-03-15 21:39:26.147969012 +0900
-@@ -373,6 +373,7 @@
+--- hostapd.sh	2026-05-20 10:26:01.000000000 +0900
++++ hostapd.sh.new	2026-09-22 04:24:04.000000000 +0900
+@@ -354,6 +354,7 @@
  	config_add_string iw_hessid iw_network_auth_type iw_qos_map_set
  	config_add_array iw_roaming_consortium iw_domain_name iw_anqp_3gpp_cell_net iw_nai_realm
  	config_add_array iw_anqp_elem iw_venue_name iw_venue_url
 +	config_add_string iw_rcois iw_realm
  
- 	config_add_boolean hs20 disable_dgaf
+ 	config_add_boolean hs20 disable_dgaf osen
  	config_add_int anqp_domain_id
-@@ -485,6 +486,10 @@
+@@ -432,6 +433,10 @@
  	fi
  }
  
@@ -19,15 +19,15 @@
  append_iw_anqp_3gpp_cell_net() {
  	if [ -z "$iw_anqp_3gpp_cell_net_conf" ]; then
  		iw_anqp_3gpp_cell_net_conf="$1"
-@@ -1332,6 +1337,7 @@
+@@ -1308,6 +1313,7 @@
  	wireless_vif_parse_encryption
  
  	json_get_vars \
 +		iw_enabled iw_rcois iw_realm iw_domain_name \
- 		ssid bssid key rsn_override \
- 		mcast_rate \
- 		ieee80211w ieee80211r fils ocv beacon_prot \
-@@ -1358,6 +1364,7 @@
+ 		ssid bssid key \
+ 		basic_rate mcast_rate \
+ 		ieee80211w ieee80211r fils ocv \
+@@ -1331,6 +1337,7 @@
  
  	local key_mgmt='NONE'
  	local network_data=
@@ -35,7 +35,7 @@
  	local T="	"
  
  	local scan_ssid="scan_ssid=1"
-@@ -1440,13 +1447,20 @@
+@@ -1406,13 +1413,20 @@
  
  			json_get_vars eap_type identity anonymous_identity ca_cert ca_cert_usesystem
  
@@ -56,7 +56,7 @@
  			[ -n "$anonymous_identity" ] && append network_data "anonymous_identity=\"$anonymous_identity\"" "$N$T"
  			case "$eap_type" in
  				tls)
-@@ -1454,6 +1468,9 @@
+@@ -1420,6 +1434,9 @@
  					append network_data "client_cert=\"$client_cert\"" "$N$T"
  					append network_data "private_key=\"$priv_key\"" "$N$T"
  					append network_data "private_key_passwd=\"$priv_key_pwd\"" "$N$T"
@@ -66,7 +66,7 @@
  
  					json_get_vars subject_match
  					[ -n "$subject_match" ] && append network_data "subject_match=\"$subject_match\"" "$N$T"
-@@ -1483,6 +1500,7 @@
+@@ -1449,6 +1466,7 @@
  							append list "$x" ";"
  						done
  						append network_data "domain_suffix_match=\"$list\"" "$N$T"
@@ -74,7 +74,7 @@
  					fi
  				;;
  				fast|peap|ttls)
-@@ -1500,6 +1518,7 @@
+@@ -1466,6 +1484,7 @@
  						append network_data "private_key2_passwd=\"$priv_key2_pwd\"" "$N$T"
  					else
  						append network_data "password=\"$password\"" "$N$T"
@@ -82,7 +82,7 @@
  					fi
  
  					json_get_vars subject_match
-@@ -1521,6 +1540,7 @@
+@@ -1487,6 +1506,7 @@
  							append list "$x" ";"
  						done
  						append network_data "domain_match=\"$list\"" "$N$T"
@@ -90,7 +90,7 @@
  					fi
  
  					json_get_values domain_suffix_match domain_suffix_match
-@@ -1530,6 +1550,7 @@
+@@ -1496,6 +1516,7 @@
  							append list "$x" ";"
  						done
  						append network_data "domain_suffix_match=\"$list\"" "$N$T"
@@ -98,7 +98,7 @@
  					fi
  
  					phase2proto="auth="
-@@ -1573,9 +1594,11 @@
+@@ -1539,9 +1560,11 @@
  						;;
  					esac
  					append network_data "phase2=\"$phase2proto$auth\"" "$N$T"
@@ -110,7 +110,7 @@
  		;;
  	esac
  
-@@ -1635,6 +1658,17 @@
+@@ -1592,6 +1615,17 @@
  
  	if [ "$key_mgmt" = "WPS" ]; then
  		echo "wps_cred_processing=1" >> "$_config"
